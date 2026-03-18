@@ -1,5 +1,6 @@
 'use client';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Box, Container, Breadcrumbs, Link as MuiLink, Typography, Pagination, Grid } from '@mui/material';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -15,20 +16,63 @@ export default function ProductsPage() {
 
     const ITEMS_PER_PAGE = 6;
 
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const categoryParam = searchParams.get('category');
+        const typeParam = searchParams.get('type');
+
+        const newFilters = { ...filters };
+        let hasChanges = false;
+
+        if (categoryParam && categoryParam !== 'All') {
+            // Map some Hero categories to internal categories
+            if (categoryParam.includes('Clothes')) {
+                newFilters.categories = ['Clothing'];
+            } else if (categoryParam.includes('Tech') || categoryParam.includes('Computer')) {
+                newFilters.categories = ['Tech', 'Laptop', 'Mobile', 'Watch', 'Audio']; // Add all techy ones
+            } else if (categoryParam.includes('Home')) {
+                newFilters.categories = ['Furniture'];
+            } else {
+                newFilters.categories = [categoryParam];
+            }
+            hasChanges = true;
+        }
+
+        // Deal with Hot offers separately or as a filter?
+        // Current Filter logic doesn't have 'hot'. Let's add it.
+        // We'll handle 'type=hot' in the useMemo below directly or add a 'type' to filters.
+
+        setFilters(prev => hasChanges ? { ...prev, ...newFilters } : prev);
+
+    }, [searchParams]);
+
     const filteredProducts = useMemo(() => {
         return PRODUCTS.filter(p => {
+            // Hot Filter
+            const typeParam = searchParams.get('type');
+            if (typeParam === 'hot' && (p.discount || 0) <= 0) return false;
+
             // Category Filter
-            if (filters.categories.length > 0 && !filters.categories.includes(p.category)) return false;
+            if (filters.categories.length > 0) {
+                // Check if any selected category matches product category
+                // Or 'Tech' umbrella matches specific tech
+                const isTech = ['Mobile', 'Laptop', 'Tech', 'Watch', 'Audio'].includes(p.category);
+                if (filters.categories.includes('Tech') && isTech) return true;
+
+                if (!filters.categories.includes(p.category)) return false;
+            }
             // Price Filter
             if (p.price < filters.priceRange[0] || p.price > filters.priceRange[1]) return false;
-            // Brand Filter (Mock logic as we don't have brand in data yet, assuming title contains brand)
+
+            // Brand Filter
             if (filters.brands.length > 0) {
                 const brandMatch = filters.brands.some(b => p.title.toLowerCase().includes(b.toLowerCase()));
                 if (!brandMatch) return false;
             }
             return true;
         });
-    }, [filters]);
+    }, [filters, searchParams]);
 
     // Pagination
     const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
@@ -47,8 +91,8 @@ export default function ProductsPage() {
                 {/* Breadcrumbs */}
                 <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 3 }}>
                     <MuiLink underline="hover" color="inherit" href="/">Home</MuiLink>
-                    <MuiLink underline="hover" color="inherit" href="#">Category</MuiLink>
-                    <Typography color="text.primary">All Products</Typography>
+                    <MuiLink underline="hover" color="inherit" href="#">{filters.categories.length > 0 ? filters.categories.join(', ') : 'All Categories'}</MuiLink>
+                    <Typography color="text.primary">{filters.categories.length > 0 ? `${filters.categories[0]} Items` : 'All Products'}</Typography>
                 </Breadcrumbs>
 
                 <Box display="flex">
@@ -57,7 +101,12 @@ export default function ProductsPage() {
 
                     {/* Main Content */}
                     <Box flexGrow={1}>
-                        <TopBar view={view} onViewChange={setView} />
+                        <TopBar
+                            view={view}
+                            onViewChange={setView}
+                            totalItems={filteredProducts.length}
+                            category={filters.categories.length > 0 ? filters.categories[0] : 'All Products'}
+                        />
 
                         <Typography variant="body2" color="text.secondary" mb={2}>
                             Showing {displayedProducts.length} of {filteredProducts.length} results

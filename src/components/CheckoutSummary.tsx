@@ -2,11 +2,27 @@
 import React from 'react';
 import { Box, Paper, Typography, Button, TextField, Divider } from '@mui/material';
 import { useCart } from '@/context/CartContext';
+import { api } from '@/services/api';
 
 export default function CheckoutSummary() {
-    const { cartTotal } = useCart();
-    const tax = 14.00;
+    const { cart, cartTotal } = useCart();
+    const tax = cart.length > 0 ? 14.00 : 0;
     const discount = 0; // Mock discount
+
+    const handleCheckout = async () => {
+        try {
+            const orderData = {
+                total: cartTotal + tax - discount,
+                items: cart
+            };
+            await api.createOrder(orderData);
+            alert('Order placed successfully!');
+            // clearCart(); // If clearCart exists
+        } catch (error) {
+            console.error('Checkout failed', error);
+            alert('Checkout failed. Please try again.');
+        }
+    };
 
     return (
         <Paper elevation={0} sx={{ border: '1px solid #E0E0E0', p: 3, borderRadius: 2 }}>
@@ -38,7 +54,15 @@ export default function CheckoutSummary() {
                 <Typography variant="h5" fontWeight="bold">${(cartTotal + tax - discount).toFixed(2)}</Typography>
             </Box>
 
-            <Button fullWidth variant="contained" color="success" size="large" sx={{ py: 1.5, mb: 2, fontSize: 16 }}>
+            <Button
+                fullWidth
+                variant="contained"
+                color="success"
+                size="large"
+                sx={{ py: 1.5, mb: 2, fontSize: 16 }}
+                onClick={handleCheckout}
+                disabled={cart.length === 0}
+            >
                 Checkout
             </Button>
 

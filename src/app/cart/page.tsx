@@ -7,9 +7,10 @@ import CartItem from '@/components/CartItem';
 import CheckoutSummary from '@/components/CheckoutSummary';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useCart } from '@/context/CartContext';
+import { PRODUCTS } from '@/data/mockData';
 
 export default function CartPage() {
-    const { cart, removeFromCart, updateQty } = useCart();
+    const { cart, removeFromCart, updateQty, addToCart, clearCart } = useCart();
 
     return (
         <Box sx={{ bgcolor: '#F7FAFC', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -45,22 +46,41 @@ export default function CartPage() {
                                 }} onClick={() => window.location.href = '/products'}>
                                     Back to shop
                                 </Button>
-                                <Button variant="outlined" color="primary">Remove all</Button>
+                                <Button variant="outlined" color="primary" onClick={clearCart}>Remove all</Button>
                             </Box>
                         </Paper>
 
                         {/* Saved for later */}
                         <Typography variant="h6" fontWeight="bold" mb={2}>Saved for later</Typography>
                         <Grid container spacing={2}>
-                            {[1, 2, 3, 4].map((i) => (
-                                <Grid size={{ xs: 6, sm: 3 }} key={i}>
+                            {[
+                                PRODUCTS.find(p => p.id === 'w1'),
+                                PRODUCTS.find(p => p.id === 'l1'),
+                                PRODUCTS.find(p => p.id === 'cam1'),
+                                PRODUCTS.find(p => p.id === 'm2')
+                            ].filter(Boolean).map((item) => (
+                                <Grid size={{ xs: 6, sm: 3 }} key={item!.id}>
                                     <Paper elevation={0} sx={{ border: '1px solid #E0E0E0', borderRadius: 2, p: 2 }}>
                                         <Box height={140} display="flex" justifyContent="center" alignItems="center" bgcolor="#F7FAFC" borderRadius={1} mb={2}>
-                                            <img src={`/assets/Image/tech/image ${30 + i}.png`} alt="item" style={{ maxWidth: '80%', maxHeight: '80%', objectFit: 'contain' }} />
+                                            <img src={item!.image} alt={item!.title} style={{ maxWidth: '80%', maxHeight: '80%', objectFit: 'contain' }} />
                                         </Box>
-                                        <Typography variant="subtitle1" fontWeight="bold">$99.50</Typography>
-                                        <Typography variant="body2" color="text.secondary" noWrap>GoPro Hero 6 4K Action Camera - Black</Typography>
-                                        <Button startIcon={<Box component="span" sx={{ fontSize: 18 }}>🛒</Box>} variant="outlined" fullWidth sx={{ mt: 1 }}>Move to cart</Button>
+                                        <Typography variant="subtitle1" fontWeight="bold">${item!.price.toFixed(2)}</Typography>
+                                        <Typography variant="body2" color="text.secondary" noWrap>{item!.title}</Typography>
+                                        <Button
+                                            startIcon={<Box component="span" sx={{ fontSize: 18 }}>🛒</Box>}
+                                            variant="outlined"
+                                            fullWidth
+                                            sx={{ mt: 1 }}
+                                            onClick={() => addToCart({
+                                                id: item!.id,
+                                                title: item!.title,
+                                                price: item!.price,
+                                                image: item!.image,
+                                                qty: 1
+                                            })}
+                                        >
+                                            Move to cart
+                                        </Button>
                                     </Paper>
                                 </Grid>
                             ))}

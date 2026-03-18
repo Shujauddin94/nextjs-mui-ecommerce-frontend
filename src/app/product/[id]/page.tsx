@@ -1,5 +1,5 @@
 'use client';
-import React, { use } from 'react';
+import React, { use, useState, useEffect } from 'react';
 import { Box, Container, Breadcrumbs, Link as MuiLink, Typography, Paper, Button, List, ListItem, ListItemText, ListItemAvatar, Avatar, Grid } from '@mui/material';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -8,6 +8,7 @@ import ProductInfo from '@/components/ProductInfo';
 import SupplierCard from '@/components/SupplierCard';
 import { PRODUCTS } from '@/data/mockData';
 import { notFound } from 'next/navigation';
+import { api, Product } from '@/services/api';
 
 function ProductTabs({ product }: { product: any }) {
     const [tab, setTab] = React.useState('desc');
@@ -46,29 +47,26 @@ function ProductTabs({ product }: { product: any }) {
 
                     <Typography variant="h6" fontWeight="bold" gutterBottom>Technical Specifications</Typography>
                     <Box sx={{ border: '1px solid #E0E0E0', borderRadius: 1, mb: 4 }}>
-                        <Typography variant="h6" fontWeight="bold" gutterBottom>Technical Specifications</Typography>
-                        <Box sx={{ border: '1px solid #E0E0E0', borderRadius: 1, mb: 4 }}>
-                            <Grid container>
-                                {[
-                                    { label: 'Model', value: '#8786867' },
-                                    { label: 'Style', value: 'Classic style' },
-                                    { label: 'Certificate', value: 'ISO-898921212' },
-                                    { label: 'Size', value: '34mm x 450mm x 19mm' },
-                                    // Only show memory for tech items
-                                    ...(['Mobile', 'Laptop', 'Tech', 'Watch', 'Audio'].includes(product.category) ? [{ label: 'Memory', value: '36GB RAM' }] : []),
-                                ].map((spec, idx) => (
-                                    <Grid size={{ xs: 12, sm: 6 }} key={spec.label} sx={{
-                                        display: 'flex',
-                                        p: 1.5,
-                                        bgcolor: idx % 2 === 0 ? '#EFF2F4' : 'transparent',
-                                        borderBottom: '1px solid #E0E0E0'
-                                    }}>
-                                        <Typography variant="body2" color="text.secondary" sx={{ width: 120 }}>{spec.label}:</Typography>
-                                        <Typography variant="body2" color="text.primary">{spec.value}</Typography>
-                                    </Grid>
-                                ))}
-                            </Grid>
-                        </Box>
+                        <Grid container>
+                            {[
+                                { label: 'Model', value: '#8786867' },
+                                { label: 'Style', value: 'Classic style' },
+                                { label: 'Certificate', value: 'ISO-898921212' },
+                                { label: 'Size', value: '34mm x 450mm x 19mm' },
+                                // Only show memory for tech items
+                                ...(product.category && ['Mobile', 'Laptop', 'Tech', 'Watch', 'Audio'].includes(product.category) ? [{ label: 'Memory', value: '36GB RAM' }] : []),
+                            ].map((spec, idx) => (
+                                <Grid size={{ xs: 12, sm: 6 }} key={spec.label} sx={{
+                                    display: 'flex',
+                                    p: 1.5,
+                                    bgcolor: idx % 2 === 0 ? '#EFF2F4' : 'transparent',
+                                    borderBottom: '1px solid #E0E0E0'
+                                }}>
+                                    <Typography variant="body2" color="text.secondary" sx={{ width: 120 }}>{spec.label}:</Typography>
+                                    <Typography variant="body2" color="text.primary">{spec.value}</Typography>
+                                </Grid>
+                            ))}
+                        </Grid>
                     </Box>
 
                     <Typography variant="h6" fontWeight="bold" gutterBottom>Features</Typography>
@@ -93,7 +91,21 @@ function ProductTabs({ product }: { product: any }) {
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
-    const product = PRODUCTS.find(p => p.id === id);
+    const [product, setProduct] = useState<Product | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        api.getProduct(id)
+            .then(data => {
+                setProduct(data);
+                setLoading(false);
+            })
+            .catch(() => {
+                setLoading(false);
+            });
+    }, [id]);
+
+    if (loading) return <Box p={5} textAlign="center">Loading...</Box>;
 
     if (!product) {
         return notFound();

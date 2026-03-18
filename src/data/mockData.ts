@@ -42,12 +42,12 @@ const REAL_PRODUCTS: Product[] = [
     { id: 'i9', category: 'Furniture', title: 'Electric Kettle', price: 20.00, originalPrice: 35.00, rating: 4.3, orders: 150, image: '/assets/Image/tech/image 85.png', description: 'Sleek black electric kettle for quick boiling.', discount: 40 },
 
     // --- CLOTHING --- 
-    { id: 'c1', category: 'Clothing', title: 'Men\'s Formal Blue Shirt', price: 25.00, originalPrice: 0, rating: 4.2, orders: 80, image: '/assets/Layout/alibaba/Image/cloth/2 1.png', description: 'Classic fit formal shirt in light blue. Wrinkle-resistant cotton blend fabric.' },
-    { id: 'c2', category: 'Clothing', title: 'Summer Floral Dress', price: 45.00, originalPrice: 60.00, rating: 4.7, orders: 110, image: '/assets/Layout/alibaba/Image/cloth/image 26.png', description: 'Lightweight floral print dress, perfect for summer outings and beach days.', discount: 25 },
-    { id: 'c3', category: 'Clothing', title: 'Casual Denim Jacket', price: 55.00, originalPrice: 0, rating: 4.5, orders: 40, image: '/assets/Layout/alibaba/Image/cloth/image 30.png', description: 'Classic denim jacket with button closure and chest pockets. versatile layering piece.' },
-    { id: 'c4', category: 'Clothing', title: 'Leather Handbag', price: 89.00, originalPrice: 120.00, rating: 4.8, orders: 25, image: '/assets/Layout/alibaba/Image/cloth/image 24.png', description: 'Genuine leather handbag with spacious interior and gold hardware details.' },
-    { id: 'c5', category: 'Clothing', title: 'Striped Polo Shirt', price: 18.00, originalPrice: 0, rating: 4.0, orders: 200, image: '/assets/Layout/alibaba/Image/cloth/Bitmap.png', description: 'Breathable cotton polo shirt with horizontal stripes and ribbed collar.' },
-    { id: 'c6', category: 'Clothing', title: 'Winter Wool Coat', price: 120.00, originalPrice: 150.00, rating: 4.9, orders: 15, image: '/assets/Layout/alibaba/Image/cloth/Bitmap (2).png', description: 'Warm wool blend coat with tailored fit and deep pockets.' },
+    { id: 'c1', category: 'Clothing', title: 'Winter Parka with Fur Hood', price: 120.00, originalPrice: 150.00, rating: 4.8, orders: 15, image: '/assets/Layout/alibaba/Image/cloth/2 1.png', description: 'Warm winter parka with faux fur hood for extreme cold.', discount: 20 },
+    { id: 'c2', category: 'Clothing', title: 'Denim Backpack', price: 45.00, originalPrice: 60.00, rating: 4.7, orders: 110, image: '/assets/Layout/alibaba/Image/cloth/image 26.png', description: 'Stylish denim backpack, perfect for daily commute and travel.', discount: 25 },
+    { id: 'c3', category: 'Clothing', title: 'Men\'s Blue Blazer', price: 85.00, originalPrice: 0, rating: 4.5, orders: 40, image: '/assets/Layout/alibaba/Image/cloth/image 30.png', description: 'Classic fit formal blazer in navy blue. Versatile for office or events.' },
+    { id: 'c4', category: 'Clothing', title: 'Blue Leather Wallet', price: 29.00, originalPrice: 40.00, rating: 4.8, orders: 25, image: '/assets/Layout/alibaba/Image/cloth/image 24.png', description: 'Genuine leather wallet with multiple card slots.' },
+    { id: 'c5', category: 'Clothing', title: 'Blue Jeans', price: 35.00, originalPrice: 0, rating: 4.0, orders: 200, image: '/assets/Layout/alibaba/Image/cloth/Bitmap (2).png', description: 'Comfortable regular fit blue jeans.' },
+    { id: 'c6', category: 'Clothing', title: 'Classic Blue Polo', price: 25.00, originalPrice: 0, rating: 4.2, orders: 80, image: '/assets/Layout/alibaba/Image/cloth/Bitmap.png', description: 'Breathable cotton polo shirt in classic blue.' },
 ];
 
 export const PRODUCTS: Product[] = [

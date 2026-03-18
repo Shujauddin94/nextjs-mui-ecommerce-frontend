@@ -16,7 +16,11 @@ export default function HeroSection() {
                     <Grid size={{ xs: 12, md: 3, lg: 2.5 }}>
                         <List dense>
                             {CATEGORIES.map((cat, index) => (
-                                <ListItemButton key={index} sx={{ borderRadius: 1, '&:hover': { bgcolor: '#E5F1FF', color: '#0D63D1' } }}>
+                                <ListItemButton
+                                    key={index}
+                                    sx={{ borderRadius: 1, '&:hover': { bgcolor: '#E5F1FF', color: '#0D63D1' } }}
+                                    onClick={() => window.location.href = `/products?category=${encodeURIComponent(cat)}`}
+                                >
                                     <ListItemText primary={cat} primaryTypographyProps={{ fontSize: 14 }} />
                                 </ListItemButton>
                             ))}

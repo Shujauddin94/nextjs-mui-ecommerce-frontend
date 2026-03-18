@@ -7,7 +7,7 @@ import { CartProvider } from "@/context/CartContext";
 
 export const metadata: Metadata = {
   title: "E-commerce App",
-  description: "Cloned with Next.js and MUI",
+  description: "Cloned with Next.js and MUI", // Add your own description here
 };
 
 export default function RootLayout({

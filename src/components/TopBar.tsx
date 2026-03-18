@@ -7,13 +7,15 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 interface TopBarProps {
     view: 'grid' | 'list';
     onViewChange: (v: 'grid' | 'list') => void;
+    totalItems: number;
+    category: string;
 }
 
-export default function TopBar({ view, onViewChange }: TopBarProps) {
+export default function TopBar({ view, onViewChange, totalItems, category }: TopBarProps) {
     return (
         <Paper elevation={0} sx={{ border: '1px solid #E0E0E0', p: 1, px: 2, mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderRadius: 2 }}>
             <Box>
-                <Typography variant="body1">12,911 items in <span style={{ fontWeight: 'bold' }}>Mobile accessory</span></Typography>
+                <Typography variant="body1">{totalItems} items in <span style={{ fontWeight: 'bold' }}>{category}</span></Typography>
             </Box>
 
             <Box display="flex" alignItems="center" gap={2}>

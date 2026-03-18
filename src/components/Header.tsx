@@ -103,6 +103,7 @@ export default function Header() {
                                 display: { xs: 'none', sm: 'block' },
                                 cursor: 'pointer'
                             }}
+                            onClick={() => window.location.href = '/'}
                         >
                             Brand
                         </Typography>
@@ -153,7 +154,7 @@ export default function Header() {
                             <FavoriteBorderIcon />
                             <Typography>Orders</Typography>
                         </ActionButton>
-                        <ActionButton>
+                        <ActionButton onClick={() => window.location.href = '/cart'}>
                             <Badge badgeContent={cartCount} color="error">
                                 <ShoppingCartOutlinedIcon />
                             </Badge>
@@ -185,7 +186,7 @@ export default function Header() {
                         <Button startIcon={<MenuIcon />} sx={{ fontWeight: 600, color: 'text.primary' }} onClick={() => window.location.href = '/products'}>
                             All category
                         </Button>
-                        <Button color="inherit" sx={{ fontWeight: 400 }}>Hot offers</Button>
+                        <Button color="inherit" sx={{ fontWeight: 400 }} onClick={() => window.location.href = '/products?type=hot'}>Hot offers</Button>
                         <Button color="inherit" sx={{ fontWeight: 400 }}>Gift boxes</Button>
                         <Button color="inherit" sx={{ fontWeight: 400 }}>Projects</Button>
                         <Button color="inherit" sx={{ fontWeight: 400 }}>Menu item</Button>
